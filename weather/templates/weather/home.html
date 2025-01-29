@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart WeatherSense</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'images/weather.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+
+        /* Adding a gradient overlay for better contrast */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            width: 320px;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            border: none;
+            border-radius: 6px;
+            outline: none;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px;
+            width: 80%;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2563EB, #1E40AF);
+        }
+
+        .weather-info {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .weather-info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #F87171;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function clearWeatherData() {
+            document.getElementById('weather-info').innerHTML = '';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart WeatherSense</h1>
+        <form method="GET" onsubmit="clearWeatherData()">
+            <input type="text" name="city" placeholder="Enter city">
+            <button type="submit">Get Weather</button>
+            <button type="button" onclick="clearWeatherData()">Clear</button>
+        </form>
+        
+        {% if city %}
+            {% if weather %}
+                <div id="weather-info" class="weather-info">
+                    <h2>{{ city }}</h2>
+                    <p>🌡️ Temperature: {{ weather.main.temp }}°C</p>
+                    <p>💧 Humidity: {{ weather.main.humidity }}%</p>
+                    <p>🌬️ Wind Speed: {{ weather.wind.speed }} m/s</p>
+                </div>
+            {% else %}
+                <p class="error-message">No weather data available. Please check the city name.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
